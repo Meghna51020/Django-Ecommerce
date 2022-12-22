@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+
+{% block content %} 
+
+{% include 'slider.html' %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Trending</h2>
+            <hr>
+            <div class="row">
+                {% for item in trending_products %}
+                    <div class="col-md-3 product_data">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{% url 'productview' item.category.slug item.slug %}">
+                                    <div class="category-image">
+                                        <img src="{{item.product_image.url}}" class="w-100">
+                                    </div>
+                                    <h4 class="text-center">{{item.name}}</h4>
+                                </a>        
+                                    <span class="float-start">{{item.selling_price}}</span>
+                                    <br>
+                                    <div dlass="row mt-2">
+                                        <div class="col-md-6">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{item.id}}" class="prod_id">
+                                            <label for="Quantity">Quantity</label>
+                                            <div class="input-group text-center mb-3">
+                                                <button class="input-group-text decrement-btn">-</button>
+                                                <input type="text" name="quantity" class="form-control text-center qty-input" value="1">
+                                                <button class="input-group-text increment-btn">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 px-0">
+                                        <span class="mb-2">
+                                            {% if products.quantity >= 0 %}
+                                                <button type="button" class="btn btn-primary me-3 addToCartBtn">Add to Cart<i class="fa-thin fa-cart-shopping-fast"></i></button>
+                                            {% else %}
+                                                <button type="button" class="btn btn-danger btn-sm me-3 disabled">Out Of Stock</button>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
